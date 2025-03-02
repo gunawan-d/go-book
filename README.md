@@ -161,6 +161,15 @@ All book-related endpoints require authentication using JSON Web Token (JWT). In
 Authorization: Bearer ******
 ```
 
+---
+
+## ✅ Validation Rules
+1. **`release_year` must be between 1980 and 2024**
+2. **Title, author, total_page, and category_id are required fields**
+3. **Total pages must be a positive number**
+
+---
+
 #### 📖 Endpoints
 
 #### 1️. Get All Books
@@ -220,6 +229,18 @@ curl --location 'http://localhost:8080/api/books' \
 {"message":"Book created successfully"}
 ```
 
+**Validation Errors:**
+```json
+{
+    "error": "release_year must be between 1980 and 2024"
+}
+```
+```json
+{
+    "error": "total_page must be a positive number"
+}
+```
+
 #### 3. Get Book by ID
 Retrieve details of a specific book by its ID.
 ```
@@ -243,6 +264,21 @@ curl --location 'http://localhost:8080/api/books/5' \
 }}
 ```
 
+**Error Response (Book Not Found):**
+```json
+{
+    "error": "Book not found"
+}
+```
+
+**Success Response:**
+```json
+{
+    "message": "Book deleted successfully"
+}
+```
+
+
 #### 4️. Delete Book by ID
 Remove a book from the collection.
 ```
@@ -253,13 +289,29 @@ DELETE /api/books/{id}
 curl --location --request DELETE 'http://localhost:8080/api/books/1' \
 --header 'Authorization: Bearer ******'
 ```
-##### Response:
+
+**Error Response (Book Not Found):**
 ```json
-{"message":"Book deleted successfully"}
+{
+    "error": "Book not found"
+}
+```
+
+**Validation Errors:**
+```json
+{
+    "error": "release_year must be between 1980 and 2024"
+}
+```
+
+**Success Response:**
+```json
+{
+    "message": "Book updated successfully"
+}
 ```
 
 ---
 Ensure you replace `******` with your valid JWT token in all requests.
-
 
 
