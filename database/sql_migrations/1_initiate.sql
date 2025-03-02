@@ -12,7 +12,7 @@ CREATE TABLE books (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    ADD COLUMN author VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
     image_url VARCHAR(255),
     release_year INTEGER,
     price INTEGER,

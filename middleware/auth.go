@@ -8,23 +8,17 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 
 )
 
 var JwtKey []byte
+
 func init() {
-    err := godotenv.Load(".env")
-    if err != nil {
-        panic("Error loading .env file")
-    }
-
-    JwtKey = []byte(os.Getenv("JWT_SECRET"))
-    if len(JwtKey) == 0 {
-        panic("JWT_SECRET is not set in environment")
-    }
+	JwtKey = []byte(os.Getenv("JWT_SECRET"))
+	if len(JwtKey) == 0 {
+		panic("JWT_SECRET is not set in environment")
+	}
 }
-
 func extractToken(c *gin.Context) string {
     bearerToken := c.GetHeader("Authorization")
     if len(bearerToken) > 7 && strings.ToUpper(bearerToken[0:7]) == "BEARER " {

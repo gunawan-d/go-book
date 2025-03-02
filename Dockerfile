@@ -5,21 +5,17 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 COPY . .
-##Build golang with directory service v2
+## Build with arch amd64
 ARG DIR
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o service *.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o service *.go
 
-#Stage 2: for production
+# Stage 2: for production
 FROM alpine:3.20 AS production
 RUN apk --no-cache add ca-certificates && update-ca-certificates
 RUN apk add --no-cache tzdata 
 WORKDIR /app
 COPY --from=builder /app/service .
+RUN chmod +x service 
 ENV TZ=Asia/Jakarta
-# Allow ping command to be executed without sudo
-RUN chmod u+s /bin/ping
-ENV TZ=Asia/Jakarta
-#Expose port
 EXPOSE 8080
-#Command to run the executable
 ENTRYPOINT [ "./service" ]
